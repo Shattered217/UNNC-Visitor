@@ -1,0 +1,21 @@
+{
+  "name": "unnc-visitor-agent",
+  "version": "0.2.3",
+  "description": "Self-hosted UNNC visitor automation with Playwright, access QR and Telegram notifications",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node main.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "RUN_BROWSER_TESTS=1 node --test test/browser.test.mjs"
+  },
+  "dependencies": {
+    "jsqr": "1.4.0",
+    "playwright": "1.65.0",
+    "pngjs": "7.0.0"
+  }
+}

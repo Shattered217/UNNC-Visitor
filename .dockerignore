@@ -1,0 +1,15 @@
+**
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!agent/
+!agent/*.mjs
+!agent/package.json
+!agent/package-lock.json
+!src/
+!src/visitor-model.ts
+!src/renewal.ts
+!src/auth.ts
+!web/
+!web/**
+!calendar/
+!calendar/*.json

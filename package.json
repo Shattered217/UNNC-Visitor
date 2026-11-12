@@ -1,0 +1,22 @@
+{
+  "name": "unnc-visitor",
+  "version": "0.2.3",
+  "description": "Self-hosted UNNC visitor assistant with campus access QR and automatic renewal",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "test:agent": "npm test --prefix agent",
+    "test:browser": "npm run test:browser --prefix agent",
+    "validate": "npm run check && npm test && npm run test:agent"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}

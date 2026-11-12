@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="robots" content="noindex, nofollow">
+  <title>UNNC 访客助手</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="header">
+      <a class="brand" href="/" aria-label="UNNC 访客助手首页"><span class="brand-icon">U.</span><span>UNNC <span class="brand-light">访客助手</span></span></a>
+      <div class="header-actions"><span class="private-label"><span class="dot"></span> 访客助手</span><button class="quiet" id="logout" hidden>退出</button></div>
+    </header>
+
+    <section id="login-view" class="login-view" hidden>
+      <div class="eyebrow">YOUR CAMPUS, ONE STEP CLOSER</div>
+      <h1>进校，<br><span class="muted">少点折腾。</span></h1>
+      <p class="intro">自动续约，随手查看今天的门禁码。</p>
+      <form id="login-form" class="login-card">
+        <label for="access-key">访问密钥</label>
+        <div class="input-row"><input type="password" id="access-key" name="access-key" placeholder="输入你的访问密钥" autocomplete="current-password" required minlength="32"><button class="primary" id="login-button" type="submit">打开助手 <span aria-hidden="true">↗</span></button></div>
+        <p class="hint">查看今日通行、预约进度和学校来信。</p>
+        <p id="login-error" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="mail-view" hidden>
+      <div class="page-heading"><div><div class="eyebrow">YOUR CAMPUS, ONE STEP CLOSER</div><h1>今日校园通行</h1><p class="intro">预约、门禁码和学校来信，都在这里。</p></div><span class="live"><span class="dot"></span><span id="live-label">自动更新</span></span></div>
+      <div class="address-card"><div><div class="small-label">专属收件地址</div><div class="address" id="mailbox-address"></div></div><button class="copy-button" id="copy-address">复制地址 <span aria-hidden="true">↗</span></button></div>
+      <section class="visitor-card" aria-label="今日门禁二维码">
+        <div class="panel-heading"><h2>今日通行</h2><button class="quiet" id="refresh-visitor">刷新预约 ↻</button></div>
+        <div class="visitor-content"><div><p id="visitor-status" role="status">正在读取预约…</p><p id="visitor-detail" class="hint"></p><p class="hint">二维码来自学校通行页面，日期以北京时间为准。</p></div><img id="gate-qr" class="gate-qr" alt="学校官方门禁二维码" width="240" height="240" hidden></div>
+      </section>
+      <details class="config-card" id="config-panel">
+        <summary>可选配置 <span id="renewal-summary" class="hint"></span></summary>
+        <form id="config-form" class="config-grid">
+          <label class="check-label"><input id="cfg-enabled" type="checkbox">自动续约</label>
+          <label>入校门岗<select id="cfg-gate" required></select></label>
+          <label>来访原因<select id="cfg-purpose" required></select></label>
+          <label id="purpose-extra-label" hidden>来访原因补充<input id="cfg-purpose-extra" maxlength="300"></label>
+          <label>接访人邮箱<input id="cfg-host" type="email" placeholder="name@nottingham.edu.cn" required></label>
+          <label class="check-label"><input id="cfg-driving" type="checkbox">驾车入校</label>
+          <label id="plate-label" hidden>车牌号码<input id="cfg-plate" maxlength="20"></label>
+          <label>工作日计算<select id="cfg-calendar"><option value="china">中国法定工作日（包含调休）</option><option value="weekdays">周一至周五</option></select></label>
+          <label>提前几个工作日<input id="cfg-lead" type="number" min="1" max="10" required></label>
+          <label>续约时间（北京时间）<select id="cfg-hour"></select></label>
+          <label>日期范围<select id="cfg-mode"><option value="max_span">从续约当天起，取学校最大跨度</option><option value="after_expiry">从原预约到期次日起接续</option></select></label>
+          <p class="hint config-wide" id="school-limits"></p>
+          <p class="hint config-wide" id="renewal-detail" role="status"></p>
+          <div class="config-wide"><button type="submit" class="primary" id="save-config">保存配置</button><span class="hint" id="config-feedback" role="status"></span></div>
+        </form>
+      </details>
+      <div class="inbox-layout">
+        <section class="inbox-panel" aria-label="收件箱">
+          <div class="panel-heading"><h2>收件箱 <span id="mail-count" class="count">0</span></h2><button class="quiet" id="refresh">刷新 <span aria-hidden="true">↻</span></button></div>
+          <div id="message-list" class="message-list"></div>
+          <div id="empty-inbox" class="empty-state" hidden><svg viewBox="0 0 64 64" width="64" height="64" fill="none" aria-hidden="true"><path d="M10 22h44v30H10z" stroke="currentColor" stroke-width="1.5"/><path d="m10 22 22 17 22-17M19 14h26M25 7h14" stroke="currentColor" stroke-width="1.5"/></svg><h3>等待第一封来信</h3><p>把上方地址填进访客系统，<br>来信后会自动出现在这里。</p></div>
+        </section>
+        <section class="reader-panel" aria-label="邮件内容">
+          <div id="reader-empty" class="reader-placeholder"><span class="reader-symbol" aria-hidden="true">↖</span><p>选一封来信，慢慢看。</p></div>
+          <article id="reader" hidden><div class="reader-top"><span class="small-label" id="reader-date"></span><button class="quiet danger" id="delete-message">删除</button></div><h2 id="reader-subject"></h2><div id="reader-sender" class="sender"></div><div id="code-card" class="code-card" hidden><div><div class="small-label">访客系统验证码</div><strong id="reader-code"></strong></div><button class="copy-button" id="copy-code">复制</button></div><pre id="reader-body" class="mail-body"></pre><p class="attachment-note">完整邮件及附件可在 Cloud Mail 中查看。</p></article>
+        </section>
+      </div>
+      <footer class="footer"><span>UNNC VISITOR</span><span>Cloud Mail 收件 · 验证码最长可取用 <span id="code-ttl">10</span> 分钟</span></footer>
+    </section>
+    <p id="initial-state" class="loading" role="status">正在打开助手…</p>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </main>
+</body>
+</html>

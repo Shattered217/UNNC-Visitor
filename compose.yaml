@@ -1,0 +1,46 @@
+services:
+  visitor-agent:
+    image: unnc-visitor-agent:0.2.3
+    build: .
+    container_name: unnc-visitor-agent
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    shm_size: 256mb
+    mem_limit: 1536m
+    pids_limit: 512
+    ports:
+      - "${BIND_ADDRESS:-0.0.0.0}:${HTTP_PORT:-8789}:8080"
+    tmpfs:
+      - /tmp:size=536870912,mode=1777
+    environment:
+      MAIL_API_URL: ${MAIL_API_URL:?Set MAIL_API_URL in .env}
+      MAILBOX_ADDRESS: ${MAILBOX_ADDRESS:?Set MAILBOX_ADDRESS in .env}
+      ACCESS_KEY_FILE: /run/secrets/app_key
+      MAILBOX_PASSWORD_FILE: /run/secrets/mailbox_password
+      DATA_DIR: /data
+      SYNC_SECONDS: ${SYNC_SECONDS:-300}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+    secrets: [app_key, mailbox_password]
+    volumes:
+      - ./data:/data
+    healthcheck:
+      test: [CMD, node, healthcheck.mjs]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "3"
+
+secrets:
+  app_key:
+    file: ./.secrets/app-key
+  mailbox_password:
+    file: ./.secrets/mailbox-password
