@@ -26,18 +26,13 @@
 
 ## 使用效果
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <strong>iPhone 快捷指令</strong><br><br>
-      <img src="https://github.com/user-attachments/assets/c6c09ee6-8ef1-4ade-b83a-c0feb2d218a4" alt="在 iPhone 控制中心运行 UNNC 门禁码快捷指令" width="280">
-    </td>
-    <td width="50%" valign="top">
-      <strong>Telegram 续约通知</strong><br><br>
-      <img src="https://github.com/user-attachments/assets/e2cdcbaf-26e7-43c8-9b0a-cebee7d1e352" alt="续约全部获批后，Telegram 通知本次预约日期范围" width="402">
-    </td>
-  </tr>
-</table>
+TG 通知
+
+<img src="https://github.com/user-attachments/assets/e2cdcbaf-26e7-43c8-9b0a-cebee7d1e352" alt="续约全部获批后，Telegram 通知本次预约日期范围" width="402">
+
+快捷指令
+
+<img src="https://github.com/user-attachments/assets/c6c09ee6-8ef1-4ade-b83a-c0feb2d218a4" alt="在 iPhone 控制中心运行 UNNC 门禁码快捷指令" width="280">
 
 ## 日常怎么用
 
